@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Desktop Slide Media -->
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                     <label class="disable-select form-label">Desktop Slide Image (2000x700px)</label>
                     <div class="d-flex align-items-center flex-wrap gap-3 mb-2">
                         <div class="media-preview-container" v-if="mediaPreview || media" style="width: 120px; height: 50px;">
@@ -80,25 +80,6 @@
                                 </div>
                             </div>
                             <span v-if="validationErrors.media" class="disable-select form-error">{{ validationErrors.media }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mobile Slide Media -->
-                <div class="col-12 col-md-6">
-                    <label class="disable-select form-label">Mobile Slide Image</label>
-                    <div class="d-flex align-items-center flex-wrap gap-3 mb-2">
-                        <div class="media-preview-container" v-if="mobilemediaPreview || mobilemedia" style="width: 60px; height: 50px;">
-                            <img :src="mobilemediaPreview || mobilemedia" class="media-preview-img" alt="Mobile Preview">
-                        </div>
-                        <div class="flex-grow-1">
-                            <div class="custom-file-wrapper">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="mobilemedia" ref="mobilemediaInput" @change="handleFileChange($event, 'mobile')">
-                                    <label class="custom-file-label text-truncate" for="mobilemedia">{{ mobilemediaFilename || 'Choose mobile image...' }}</label>
-                                </div>
-                            </div>
-                            <span v-if="validationErrors.mobilemedia" class="disable-select form-error">{{ validationErrors.mobilemedia }}</span>
                         </div>
                     </div>
                 </div>
@@ -141,7 +122,6 @@
                             <th>Slide Title</th>
                             <th>Redirection Link</th>
                             <th class="text-center" style="width: 180px;">Desktop Banner</th>
-                            <th class="text-center" style="width: 120px;">Mobile Banner</th>
                             <th style="width: 120px;">Display</th>
                             <th style="width: 140px;" class="text-right">Action</th>
                         </tr>
@@ -156,12 +136,6 @@
                             <td class="text-center align-middle">
                                 <div class="table-media-container" v-if="slide.media" style="width: 120px; height: 42px; border-radius: 4px;">
                                     <img :src="slide.media" class="table-cell-image" alt="Desktop Slide">
-                                </div>
-                                <span v-else class="text-slate-400 font-italic small">No image</span>
-                            </td>
-                            <td class="text-center align-middle">
-                                <div class="table-media-container" v-if="slide.mobilemedia" style="width: 50px; height: 42px; border-radius: 4px;">
-                                    <img :src="slide.mobilemedia" class="table-cell-image" alt="Mobile Slide">
                                 </div>
                                 <span v-else class="text-slate-400 font-italic small">No image</span>
                             </td>
@@ -216,15 +190,10 @@ export default {
             title: '',
             link: '',
             media: '',
-            mobilemedia: '',
 
             mediaFile: null,
             mediaFilename: '',
             mediaPreview: '',
-
-            mobilemediaFile: null,
-            mobilemediaFilename: '',
-            mobilemediaPreview: '',
             
             searchKey: '',
             searchVal: '',
@@ -261,23 +230,15 @@ export default {
             this.title = '';
             this.link = '';
             this.media = '';
-            this.mobilemedia = '';
             
             this.mediaFile = null;
             this.mediaFilename = '';
             this.mediaPreview = '';
 
-            this.mobilemediaFile = null;
-            this.mobilemediaFilename = '';
-            this.mobilemediaPreview = '';
-
             this.validationErrors = {};
             
             if (this.$refs.mediaInput) {
                 this.$refs.mediaInput.value = '';
-            }
-            if (this.$refs.mobilemediaInput) {
-                this.$refs.mobilemediaInput.value = '';
             }
         },
 
@@ -296,11 +257,6 @@ export default {
                     this.mediaFilename = file.name;
                     this.mediaPreview = URL.createObjectURL(file);
                     this.clearFieldError('media');
-                } else if (type === 'mobile') {
-                    this.mobilemediaFile = file;
-                    this.mobilemediaFilename = file.name;
-                    this.mobilemediaPreview = URL.createObjectURL(file);
-                    this.clearFieldError('mobilemedia');
                 }
             }
         },
@@ -353,15 +309,10 @@ export default {
             this.title = slide.title;
             this.link = slide.link;
             this.media = slide.media;
-            this.mobilemedia = slide.mobilemedia;
             
             this.mediaFile = null;
             this.mediaFilename = slide.media ? slide.media.split('/').pop() : '';
             this.mediaPreview = '';
-
-            this.mobilemediaFile = null;
-            this.mobilemediaFilename = slide.mobilemedia ? slide.mobilemedia.split('/').pop() : '';
-            this.mobilemediaPreview = '';
 
             this.validationErrors = {};
             this.successMessage = '';
@@ -392,13 +343,6 @@ export default {
                 crudvalidation.push('nullable');
             }
 
-            if (this.mobilemediaFile) {
-                fd.append('mobilemedia', this.mobilemediaFile);
-                crudnames.push('mobilemedia');
-                crudtypes.push('image');
-                crudvalidation.push('nullable');
-            }
-
             fd.append('crudnames', crudnames.join(','));
             fd.append('crudtypes', crudtypes.join(','));
             fd.append('crudvalidation', crudvalidation.join(','));
@@ -415,10 +359,8 @@ export default {
                         }, 1200);
                     } else {
                         this.mediaFile = null;
-                        this.mobilemediaFile = null;
                         if (res.data && typeof res.data === 'object') {
                             if (res.data.media) this.media = res.data.media;
-                            if (res.data.mobilemedia) this.mobilemedia = res.data.mobilemedia;
                         }
                     }
                 })
@@ -443,7 +385,7 @@ export default {
                 window.axios.delete('/crud/' + id, {
                     params: {
                         model: 'Slider',
-                        files: 'media,mobilemedia'
+                        files: 'media'
                     }
                 })
                 .then(res => {

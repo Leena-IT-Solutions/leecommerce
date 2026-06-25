@@ -56,7 +56,6 @@ import AdminSettings from './components/administrator/Settings.vue';
 import AdminWebsiteManagerSlider from './components/administrator/website_manager/Slider.vue';
 import AdminWebsiteManagerFeatures from './components/administrator/website_manager/Features.vue';
 import AdminWebsiteManagerPages from './components/administrator/website_manager/Pages.vue';
-import AdminWebsiteManagerContent from './components/administrator/website_manager/Content.vue';
 import AdminProductsCategory from './components/administrator/products/Category.vue';
 import AdminProductsSubCategory from './components/administrator/products/SubCategory.vue';
 import AdminProductsProductGroup from './components/administrator/products/ProductGroup.vue';
@@ -85,7 +84,6 @@ const app = new Vue({
         AdminWebsiteManagerSlider,
         AdminWebsiteManagerFeatures,
         AdminWebsiteManagerPages,
-        AdminWebsiteManagerContent,
         AdminProductsCategory,
         AdminProductsSubCategory,
         AdminProductsProductGroup,

@@ -15,5 +15,6 @@ class Page extends Model
         "keywords",
         "description",
         "media",
+        "content",
     ];
 }

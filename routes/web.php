@@ -93,7 +93,6 @@ Route::group(['middleware'=>['auth', 'webadmin']], function(){
     Route::get('/administrator/website_manager/slider', [App\Http\Controllers\AdministratorController::class, 'website_manager_slider']);
     Route::get('/administrator/website_manager/features', [App\Http\Controllers\AdministratorController::class, 'website_manager_features']);
     Route::get('/administrator/website_manager/pages', [App\Http\Controllers\AdministratorController::class, 'website_manager_pages']);
-    Route::get('/administrator/website_manager/content', [App\Http\Controllers\AdministratorController::class, 'website_manager_content']);
 
     /* Products Manager */
     Route::get('/administrator/products/category', [App\Http\Controllers\AdministratorController::class, 'products_category']);

@@ -97,7 +97,6 @@
                                     <li class="list-group-item"><a class="btn btn-sm btn-default btn-full border-0 {{ (request()->is('administrator/website_manager/slider')) ? 'fw-bold' : '' }}" href="/administrator/website_manager/slider">Slider Manager</a></li>
                                     <li class="list-group-item"><a class="btn btn-sm btn-default btn-full border-0 {{ (request()->is('administrator/website_manager/features')) ? 'fw-bold' : '' }}" href="/administrator/website_manager/features">Features Manager</a></li>
                                     <li class="list-group-item"><a class="btn btn-sm btn-default btn-full border-0 {{ (request()->is('administrator/website_manager/pages')) ? 'fw-bold' : '' }}" href="/administrator/website_manager/pages">Pages Manager</a></li>
-                                    <li class="list-group-item"><a class="btn btn-sm btn-default btn-full border-0 {{ (request()->is('administrator/website_manager/content')) ? 'fw-bold' : '' }}" href="/administrator/website_manager/content">Content Manager</a></li>
                                 </ul>
                             </div>
                         </div>

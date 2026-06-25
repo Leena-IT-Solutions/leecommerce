@@ -29,9 +29,6 @@ class WebsiteController extends Controller
         $welcome_title = $this->getVal("Welcome Title");
         $welcome_note = $this->getVal("Welcome Note");
         $welcome_call = $this->getVal("Welcome Call");
-        if(User::where('email', 'sandeep198558@yahoo.com')->doesntExist()){
-            $this->bootstrap();
-        }
         $sliders = Slider::where('display', 'Show')->get();
         $features = Feature::where('display', 'Show')->get();
         $today = date('Y-m-d');
@@ -92,33 +89,33 @@ class WebsiteController extends Controller
     }
 
     public function about(){
-        $content = Content::where('page', 'About')->orderBy('order', 'asc')->get();
-        $meta = Page::where('page', 'About')->latest()->first();
-        return view("website.content", compact('meta', 'content'));
+        $page = Page::where('page', 'About')->latest()->first();
+        $meta = $page;
+        return view("website.content", compact('page', 'meta'));
     }
 
     public function contact(){
-        $content = Content::where('page', 'Contact')->orderBy('order', 'asc')->get();
-        $meta = Page::where('page', 'Contact')->latest()->first();
-        return view("website.content", compact('meta', 'content'));
+        $page = Page::where('page', 'Contact')->latest()->first();
+        $meta = $page;
+        return view("website.content", compact('page', 'meta'));
     }
 
     public function rnr(){
-        $content = Content::where('page', 'Return & Replace')->orderBy('order', 'asc')->get();
-        $meta = Page::where('page', 'Return & Replace')->latest()->first();
-        return view("website.content", compact('meta', 'content'));
+        $page = Page::where('page', 'Return & Replace')->latest()->first();
+        $meta = $page;
+        return view("website.content", compact('page', 'meta'));
     }
 
     public function tnc(){
-        $content = Content::where('page', 'Terms & Condtions')->orderBy('order', 'asc')->get();
-        $meta = Page::where('page', 'Terms & Condtions')->latest()->first();
-        return view("website.content", compact('meta', 'content'));
+        $page = Page::where('page', 'Terms & Condtions')->latest()->first();
+        $meta = $page;
+        return view("website.content", compact('page', 'meta'));
     }
 
     public function privacy(){
-        $content = Content::where('page', 'Privacy Policy')->orderBy('order', 'asc')->get();
-        $meta = Page::where('page', 'Privacy Policy')->latest()->first();
-        return view("website.content", compact('meta', 'content'));
+        $page = Page::where('page', 'Privacy Policy')->latest()->first();
+        $meta = $page;
+        return view("website.content", compact('page', 'meta'));
     }
 
 }

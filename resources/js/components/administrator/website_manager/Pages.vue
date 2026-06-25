@@ -68,6 +68,13 @@
                     <span v-if="validationErrors.description" class="disable-select form-error">{{ validationErrors.description }}</span>
                 </div>
 
+                <!-- Page Content (HTML supported) -->
+                <div class="col-12" v-if="isContentPage()">
+                    <label class="disable-select form-label" for="content">Page Content (HTML Supported)</label>
+                    <textarea class="form-control" id="content" v-model="content" placeholder="Enter Page Content (HTML allowed)" rows="12" @input="clearFieldError('content')"></textarea>
+                    <span v-if="validationErrors.content" class="disable-select form-error">{{ validationErrors.content }}</span>
+                </div>
+
                 <!-- Page Media -->
                 <div class="col-12">
                     <label class="disable-select form-label">Page Media Image</label>
@@ -186,6 +193,7 @@ export default {
             keywords: '',
             description: '',
             media: '',
+            content: '',
 
             mediaFile: null,
             mediaFilename: '',
@@ -227,6 +235,7 @@ export default {
             this.keywords = '';
             this.description = '';
             this.media = '';
+            this.content = '';
             this.mediaFile = null;
             this.mediaFilename = '';
             this.mediaPreview = '';
@@ -241,6 +250,11 @@ export default {
                 this.$set(this.validationErrors, field, '');
             }
             this.errorMessage = '';
+        },
+
+        isContentPage() {
+            const functionalPages = ['Home', 'Cart', 'Wishlist', 'Checkout', 'Search'];
+            return this.page && !functionalPages.includes(this.page);
         },
 
         handleFileChange(e) {
@@ -277,6 +291,16 @@ export default {
                     res.data.data.forEach(pg => {
                         this.pages.push(pg);
                     });
+
+                    // Check if there is an edit_page query parameter in the URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const editPageName = urlParams.get('edit_page');
+                    if (editPageName && page === 1) {
+                        const targetPage = this.pages.find(p => p.page.toLowerCase() === editPageName.toLowerCase());
+                        if (targetPage) {
+                            this.editPage(targetPage);
+                        }
+                    }
                 })
                 .catch(err => {
                     console.error('Error fetching pages:', err);
@@ -302,6 +326,7 @@ export default {
             this.keywords = pg.keywords;
             this.description = pg.description;
             this.media = pg.media;
+            this.content = pg.content || '';
             
             this.mediaFile = null;
             this.mediaFilename = pg.media ? pg.media.split('/').pop() : '';
@@ -328,6 +353,13 @@ export default {
             let crudnames = ['page', 'title', 'keywords', 'description'];
             let crudtypes = ['text', 'text', 'textarea', 'textarea'];
             let crudvalidation = ['required|string', 'required|string', 'required|string', 'required|string'];
+
+            if (this.isContentPage()) {
+                fd.append('content', this.content || '');
+                crudnames.push('content');
+                crudtypes.push('textarea');
+                crudvalidation.push('nullable');
+            }
 
             if (this.mediaFile) {
                 fd.append('media', this.mediaFile);

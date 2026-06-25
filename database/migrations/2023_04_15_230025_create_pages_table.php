@@ -21,6 +21,7 @@ class CreatePagesTable extends Migration
             $table->text('keywords')->nullable();
             $table->text('description')->nullable();
             $table->text('media')->nullable();
+            $table->longText('content')->nullable();
 
             $table->timestamps();
         });

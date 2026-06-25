@@ -58,9 +58,6 @@ class AdministratorController extends Controller
         return view("administrator.website_manager.pages");
     }
 
-    public function website_manager_content(){
-        return view("administrator.website_manager.content");
-    }
 
     
 

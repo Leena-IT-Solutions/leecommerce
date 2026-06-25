@@ -19,14 +19,16 @@ class SettingController extends Controller
     public function get_setting(Request $request){
         $key = $request->key;
         $val = $request->val;
-        $setting = Setting::where('key', $key);
-        $a = null;
-        if($setting->exists()){
-            $a = $setting->first();
-        } else {
-            $a = Setting::create(['key' => $key,'val' => $val]);
+        $setting = Setting::where('key', $key)->first();
+        
+        if (!$setting) {
+            return response()->json([
+                'key' => $key,
+                'val' => $val
+            ]);
         }
-        return $a;
+        
+        return response()->json($setting);
     }
 
     public function save_setting(Request $request){
