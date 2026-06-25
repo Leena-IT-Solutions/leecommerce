@@ -9,11 +9,9 @@
 
     @yield('head')
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Scripts & Styles -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <link href="{{ asset('css/theme.css') }}?v={{ time() }}" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="icon" href="/images/favicon.png" type="image/png" sizes="16x16">

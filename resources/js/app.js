@@ -4,9 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-
-require('./sidebar');
+import './bootstrap';
+import './sidebar';
 
 $(document).ready(()=>{
 
@@ -46,7 +45,8 @@ $(document).ready(()=>{
 
 
 
-window.Vue = require('vue');
+import Vue from 'vue';
+window.Vue = Vue;
 import vueDebounce from 'vue-debounce'
 Vue.use(vueDebounce)
 
@@ -72,6 +72,8 @@ import Cart from './components/elements/Cart.vue';
 import Checkout from './components/elements/Checkout.vue';
 import CancelButton from './components/elements/CancelButton.vue';
 import Shipping from './components/elements/Shipping.vue';
+import DataSearch from './components/elements/DataSearch.vue';
+Vue.component('data-search', DataSearch);
 
 
 const app = new Vue({
@@ -98,5 +100,6 @@ const app = new Vue({
         Checkout,
         CancelButton,
         Shipping,
+        DataSearch,
     }
 });

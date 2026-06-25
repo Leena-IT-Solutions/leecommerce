@@ -18,6 +18,7 @@ use Storage;
 use App\Http\Controllers\GraphController;
 
 use Symfony\Component\Process\Process;
+use App\Services\ThemeService;
 
 class AdministratorController extends Controller
 {
@@ -302,42 +303,37 @@ class AdministratorController extends Controller
     }
 
     public function theme(Request $request){
+        $themeService = new ThemeService();
 
-        if(isset($request->primary)){
+        if (isset($request->primary)) {
+            // Save theme
+            $colors = [
+                "primary" => $request->input('primary', '#2d208d'),
+                "secondary" => $request->input('secondary', '#2f6a60'),
+                "success" => $request->input('success', '#00b315'),
+                "info" => $request->input('info', '#00d5ff'),
+                "warning" => $request->input('warning', '#f1b83b'),
+                "danger" => $request->input('danger', '#db0000'),
+                "light" => $request->input('light', '#ededed'),
+                "dark" => $request->input('dark', '#000000')
+            ];
 
-            Setting::where('key', 'Theme Color')->update([
-                "val" => json_encode($request->all())
-            ]);
+            Setting::updateOrCreate(
+                ['key' => 'Theme Color'],
+                ['val' => json_encode($colors)]
+            );
 
-            $theme = Setting::where('key', 'Theme Color')->exists() ? Setting::where('key', 'Theme Color')->first()->val : null;
+            // Write to public/css/theme.css using the ThemeService
+            $themeService->generateThemeCss($colors);
 
-            $theme = json_decode($theme);
-
-            $t = '$primary:'.$theme->primary.';$secondary:'.$theme->secondary.';$success:'.$theme->success.';$info:'.$theme->info.';$warning:'.$theme->warning.';$danger:'.$theme->danger.';$light:'.$theme->light.';$dark:'.$theme->dark.';';
-
-            /* {"primary":"#000000","secondary":"#000000","success":"#000000","info":"#000000","warning":"#000000","danger":"#000000","light":"#000000","dark":"#000000"} */
-
-            shell_exec("echo '".$t."' > ../resources/sass/_variables.scss");
-
-            /* $p = Process::fromShellCommandline("echo '".$t."' > ../resources/sass/_variables.scss");
-            $p->setTimeout(300);
-            $p->run(); */
-
-            //$process = Process::fromShellCommandline('npm run dev');
-            /* $process = new Process(["npm", "run", "dev"]);
-            $process->setTimeout(300);
-            $process->run(); */
-
-            return shell_exec("/var/www/html/aiyanaa.com npm run dev");
-
-        } else {
-
-            if(Setting::where('key', 'Theme Color')->exists()){
-                $theme = Setting::where('key', 'Theme Color')->first()->val;
-                $theme = json_decode($theme);
-            }
-
+            return redirect('/administrator/theme')->with('success', 'Theme configuration updated successfully.');
         }
+
+        $themeColors = $themeService->getThemeColors();
+        $theme = (object) $themeColors;
+
+        // Ensure theme.css exists in public/css/
+        $themeService->ensureThemeCssExists();
 
         return view("administrator.theme", compact("theme"));
     }

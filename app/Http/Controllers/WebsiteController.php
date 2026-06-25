@@ -74,37 +74,6 @@ class WebsiteController extends Controller
         return view("website.product", compact('product', 'pid', 'user', 'buyqty', 'meta'));
     }
 
-    public function bootstrap(){
-        $user = User::create([
-            "name" => "Sandeep Rathod",
-            "mobile" => "9664588677",
-            "email" => "sandeep198558@yahoo.com",
-            "password" => Hash::make("123456789"),
-        ]);
-
-        Role::insert([
-            [
-                "user_id" => $user->id,
-                "role" => "Customer",
-                "Status" => "Active"
-            ],
-            [
-                "user_id" => $user->id,
-                "role" => "Administrator",
-                "Status" => "Active"
-            ],
-            [
-                "user_id" => $user->id,
-                "role" => "Web-Admin",
-                "Status" => "Active"
-            ],
-            [
-                "user_id" => $user->id,
-                "role" => "Store Manager",
-                "Status" => "Active"
-            ],
-        ]);
-    }
 
     public function getVal($key){
         return Setting::where('key', $key)->exists() ? Setting::where('key', $key)->first()->val : null;

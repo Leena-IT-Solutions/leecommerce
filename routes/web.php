@@ -141,6 +141,9 @@ Route::group(['middleware'=>['auth', 'customer']], function(){
 
 View::composer(['*'], function($view){
 
+    // Automatically generate theme.css on the fly if it does not exist (e.g., on live server)
+    (new \App\Services\ThemeService())->ensureThemeCssExists();
+
     $facebook = Setting::where('key', 'Facebook')->exists() ? Setting::where('key', 'Facebook')->first()->val : null;
     $instagram = Setting::where('key', 'Instagram')->exists() ? Setting::where('key', 'Instagram')->first()->val : null;
     $youtube = Setting::where('key', 'Youtube')->exists() ? Setting::where('key', 'Youtube')->first()->val : null;

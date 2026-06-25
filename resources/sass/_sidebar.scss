@@ -1,14 +1,114 @@
-.menu{
+// Brand Header
+.menu-header {
+    background: #0f172a !important; /* Darker Slate */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem 1.5rem !important;
+    
+    p {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        letter-spacing: 0.15em;
+        color: #f8fafc !important;
+        margin: 0;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    p::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #6366f1; /* Glowing Indigo Dot */
+        border-radius: 50%;
+        box-shadow: 0 0 10px #6366f1;
+    }
+}
+
+// Sidebar Main Container
+.menu {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;;
+    height: 100vh;
     width: 0;
     display: none;
     z-index: 10;
+    background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%) !important; /* Slate to Deep Indigo */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    .menu-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .menu-content {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+        
+        &::-webkit-scrollbar {
+            width: 5px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+    }
+
+    .menu-footer {
+        flex-shrink: 0;
+        padding: 0.75rem 1.25rem !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(15, 23, 42, 0.2);
+        
+        .btn-logout {
+            background: transparent !important;
+            border: none !important;
+            color: #94a3b8 !important;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 6px !important;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.75rem;
+            text-decoration: none;
+            width: 100%;
+            padding: 0.6rem 0.75rem !important;
+            box-shadow: none !important;
+            
+            &:hover {
+                background: rgba(239, 68, 68, 0.08) !important;
+                color: #f87171 !important;
+                transform: none !important;
+                
+                i {
+                    color: #f87171 !important;
+                    transform: translateX(2px);
+                }
+            }
+            
+            i {
+                font-size: 1.1rem;
+                color: #64748b !important;
+                transition: all 0.2s ease;
+            }
+        }
+    }
 }
 
-.menu-out{
+.menu-out {
     width: 250px;
     display: block;
 }
@@ -17,41 +117,150 @@
     font-size: 1.25em;
 }
 
-.panel{
+.panel {
     position: relative;
     width: 100%;
     margin-left: 0px;
+    background: #f8fafc !important;
+    min-height: 100vh;
+    transition: all 0.3s ease;
 }
 
 .panel-shrink {
-    /* width: calc(100% - 250px); */
     width: 100%;
     margin-left: 250px;
 }
 
-.menu-container {
-    height: 100%;
-    overflow-y: auto;
+// Accordion & List Group Styling inside Sidebar
+.menu {
+    .accordion {
+        background: transparent !important;
+        padding: 0 0 0.75rem 0 !important; /* No top padding, only bottom padding, no horizontal padding */
+        display: flex;
+        flex-direction: column;
+        gap: 0; /* Remove gap for a seamless flush list */
+    }
+
+    .accordion-item {
+        background: transparent !important;
+        border: none !important;
+        margin: 0 !important;
+    }
+
+    // Accordion Button (Navigation Link)
+    .accordion-button, .btn.accordion-button {
+        background: transparent !important;
+        color: #94a3b8 !important; /* Muted slate gray */
+        border: none !important;
+        border-left: 4px solid transparent !important; /* Transparent by default to prevent layout shift */
+        border-radius: 0 !important; /* Flush edges */
+        padding: 0.75rem 1.25rem !important; /* Generous padding inside the link */
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        width: 100%;
+        box-shadow: none !important;
+        transition: all 0.25s ease;
+        
+        i {
+            color: #64748b !important; /* Muted icon color */
+            font-size: 1.1rem;
+            transition: all 0.25s ease;
+        }
+        
+        // Custom indicator for dropdown caret
+        &::after {
+            filter: invert(0.7) sepia(1) saturate(0) hue-rotate(0deg); /* Make caret white/gray */
+            transform: scale(0.85);
+            transition: transform 0.25s ease;
+        }
+        
+        &.no-caret::after {
+            display: none !important;
+        }
+
+        // Hover State
+        &:hover {
+            color: #f1f5f9 !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-left: 4px solid rgba(99, 102, 241, 0.4) !important; /* Subtle hover indicator border */
+            
+            i {
+                color: #818cf8 !important; /* Glowing indigo icon on hover */
+                transform: translateX(2px);
+            }
+        }
+
+        // Active State
+        &.bg-primary, &:not(.collapsed):not(.no-caret), &.active-link {
+            background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important; /* Premium Indigo Gradient */
+            color: #ffffff !important;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25) !important;
+            border-left: 4px solid #818cf8 !important; /* Glowing active indicator border */
+            
+            i {
+                color: #ffffff !important;
+            }
+            
+            &::after {
+                filter: invert(1) brightness(2); /* Caret turns white */
+            }
+        }
+    }
+
+    // Submenu container
+    .accordion-collapse {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    .accordion-body {
+        padding: 0.25rem 0 0.25rem 1.5rem !important; /* Indent submenus */
+        border-left: 1px dashed rgba(255, 255, 255, 0.1);
+        margin-left: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    // Submenu Items
+    .list-group-item {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        
+        a {
+            color: #64748b !important; /* Muted gray */
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: block;
+            width: 100%;
+            padding: 0.4rem 0.8rem !important;
+            border-radius: 6px !important;
+            text-align: left;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                color: #f1f5f9 !important;
+                background: rgba(255, 255, 255, 0.04) !important;
+                padding-left: 1rem !important; /* Indent slightly on hover */
+            }
+            
+            &.fw-bold {
+                color: #818cf8 !important; /* Light active indicator */
+                background: rgba(99, 102, 241, 0.08) !important;
+                font-weight: 600 !important;
+            }
+        }
+    }
 }
 
-.side-menubar {
-    padding: 0;
-    margin: 0;
-}
-
-.side-menubar li {
-    list-style: none;
-}
-
-/* // Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) {
-}
-
-/* // Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) {
-}
-
-/* // Large devices (desktops, 992px and up) */
+// Media Queries
 @media (min-width: 992px) {
     .menu {
         width: 250px;
@@ -71,6 +280,68 @@
     }
 }
 
-/* // Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
+// Custom Top Navbar Styling
+.navbar-custom {
+    background: #ffffff !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important; /* Slate 200 */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    padding: 0.75rem 1.5rem !important;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    
+    .sidebar-toggle-btn {
+        color: #475569 !important; /* Slate 600 */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        
+        &:hover {
+            background: #f1f5f9; /* Slate 100 */
+            color: #1e293b !important; /* Slate 800 */
+        }
+        
+        i {
+            font-size: 1.2rem;
+        }
+    }
+    
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 30px;
+        transition: all 0.2s ease;
+        
+        .avatar {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%) !important; /* Indigo Gradient */
+            color: #ffffff !important;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(79, 70, 229, 0.15);
+            text-transform: uppercase;
+        }
+        
+        .username {
+            color: #334155 !important; /* Slate 700 */
+            font-weight: 600;
+            font-size: 0.88rem;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+    }
 }
+

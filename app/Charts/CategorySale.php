@@ -153,5 +153,9 @@ class CategorySale extends Chart
         foreach($value as $key=>$val){
             $this->dataset($category[$key], $typ, $val)->color($color[$key])->backgroundColor($color[$key].'20')->fill(true);
         }
+
+        if(sizeof($value) <= 0){
+            $this->dataset("Category Not Found", $typ, [])->color('#ff0000')->backgroundColor('#ff000020')->fill(true);
+        }
     }
 }

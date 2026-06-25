@@ -9,30 +9,28 @@
 
     @yield('head')
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Scripts & Styles -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
 <div id="app">
 
-<div id="menu" class="menu bg-light">
+<div id="menu" class="menu">
     <div class="menu-container">
-        <div class="container p-0 bg-dark text-light">
-            <p class="text-uppercase mb-0 p-3">WEB-ADMIN</p>
-        </div>
+        <div class="menu-content">
+            <div class="menu-header">
+                <p>Web-Admin</p>
+            </div>
 
-        <ul class="list-group mb-5 rounded-0 accordion p-1" id="accordionExample">
+            <ul class="list-group mb-5 rounded-0 accordion p-1" id="accordionExample">
                 
 
             <div class="accordion" id="accordionExample">
 
             
-                <div class="accordion-item bg-primary">
+                <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                        <a href="/webadmin" class="btn accordion-button collapsed no-caret {{ (request()->is('webadmin')) ? 'bg-primary text-light' : 'bg-light text-dark' }}" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                        <a href="/webadmin" class="btn accordion-button collapsed no-caret {{ (request()->is('webadmin')) ? 'active-link' : '' }}" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
                             <i class="fas fa-fw fa-tachometer-alt mr-2"></i>
                             Dashboard
                         </a>
@@ -80,31 +78,37 @@
             </div>
 
         </ul>
+        </div> <!-- End of menu-content -->
 
+        <div class="menu-footer">
+            <a href="{{ route('logout') }}" 
+               onclick="event.preventDefault(); document.getElementById('logout-form-sidebar').submit();"
+               class="btn btn-logout"
+            >
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+            <form id="logout-form-sidebar" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </div>
 
     </div>
 </div>
 
 <div id="panel" class="panel">
-    <nav class="navbar navbar-expand navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand text-uppercase" id="handel" href="javascript:void(0);"><i class="fas fa-bars fa-lg fa-fw"></i> {{Auth::user()->name}}</a>
-            <ul class="navbar-nav">
-                <!-- <li class="nav-item">
-                    <a class="nav-link" href="/">Website</a>
-                </li> -->
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li>
-            </ul>
+    <nav class="navbar-custom">
+        <!-- Left: Sidebar Toggle Button -->
+        <a class="sidebar-toggle-btn" id="handel" href="javascript:void(0);">
+            <i class="fas fa-bars"></i>
+        </a>
+        
+        <!-- Right: User Profile Badge -->
+        <div class="user-profile">
+            <div class="avatar">
+                {{ substr(Auth::user()->name, 0, 1) }}
+            </div>
+            <span class="username d-none d-sm-inline">{{ Auth::user()->name }}</span>
         </div>
     </nav>
 
